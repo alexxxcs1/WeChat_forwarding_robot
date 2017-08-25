@@ -6,6 +6,9 @@ import re
 COUNT = 0
 PARENTWX=' '
 
+print u'\u53d1\u9001\u0020\u0023\u0030\u0030\u0023\u0062\u0064\u0020\u7ed9\u673a\u5668\u4eba\u7ed1\u5b9a\u8f6c\u53d1\u8d26\u53f7\u0020\u000d\u000a\u53d1\u9001\u0020\u0023\u0030\u0030\u0023\u0071\u0075\u0069\u0074\u0065\u0020\u7ed9\u673a\u5668\u4eba\u89e3\u7ed1\u8f6c\u53d1\u8d26\u53f7\u0020'
+
+
 @itchat.msg_register(['Text', 'Map', 'Card', 'Note', 'Sharing'])
 def text_reply(msg):
     global COUNT
@@ -46,18 +49,26 @@ def text_reply(msg):
     		itchat.send('%s: %s'%(fromuser['NickName'],msg['Text']), toUserName=sourcepackyalex)
 @itchat.msg_register(['Picture', 'Recording', 'Attachment', 'Video'])
 def download_files(msg):
-    sourcepackyalex = itchat.search_friends(name=u'\u62d4\u5200\u556a')
-    myweixin=itchat.search_friends()
-    if msg['FromUserName']== myweixin['UserName']:
-        pass
-    elif msg['FromUserName']== sourcepackyalex[0]['UserName']:
+    global COUNT
+    global PARENTWX
+    count=COUNT
+    parentwx=PARENTWX
+
+    if count==0:
         pass
     else:
-    	fileDir = '%s%s'%(msg['Type'], int(time.time()))
-    	msg['Text'](fileDir)
-    	fromuser=itchat.search_friends(userName=msg['FromUserName'])
-    	itchat.send('%s received from %s'%(msg['Type'],fromuser['NickName']), toUserName=sourcepackyalex[0]['UserName'])
-    	itchat.send('@%s@%s'%('img' if msg['Type'] == 'Picture' else 'fil', fileDir), toUserName=sourcepackyalex[0]['UserName'])
+        myweixin=itchat.search_friends()
+        if msg['FromUserName']== myweixin['UserName']:
+                pass
+        elif msg['FromUserName']== parentwx:
+                pass
+        else:
+                fileDir = '%s%s'%(msg['Type'], int(time.time()))
+                msg['Text'](fileDir)
+                fromuser=itchat.search_friends(userName=msg['FromUserName'])
+                itchat.send('%s received from %s'%(msg['Type'],fromuser['NickName']), toUserName=parentwx)
+                itchat.send('@%s@%s'%('img' if msg['Type'] == 'Picture' else 'fil', fileDir), toUserName=parentwx)
+#修改了图片类型的转发判定
 
 #@itchat.msg_register('Friends')
 #def add_friend(msg):
