@@ -1,5 +1,6 @@
 # WeChat_forwarding_robot
-# 微信转发小机器人 基于 LittleCoder开发的itchat的微信接口 [itchat链接](https://github.com/littlecodersh/ItChat "悬停显示牛逼！")   
+# 微信转发小机器人 基于 LittleCoder开发的itchat的微信接口 
+## [itchat链接](https://github.com/littlecodersh/ItChat "悬停显示牛逼！")   
 
 Python练手用的，原理是基于Itchat的网页微信接口来获取消息，判断消息来源转发给另一个微信号。
 
