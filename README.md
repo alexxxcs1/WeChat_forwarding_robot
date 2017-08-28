@@ -247,9 +247,21 @@ IndexError: tuple index out of range`
 
 `r = self.s.post(url, data=json.dumps(data), headers=headers, timeout=config.TIMEOUT,verify=False)`
 
-总结一下，六个需要改的地方
+添加了获取好友列表后，又发现会错误的地方
+
+login.py 的90行
+
+`r = core.s.get(url, headers=headers).json()`
+
+改成
+
+`r = core.s.get(url, headers=headers,verify=False).json()`
+
+# 总结一下，六个需要改的地方
 
 `utils.py 125行`
+
+`login.py 90行`
 
 `login.py 102行`
 
