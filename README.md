@@ -257,7 +257,7 @@ login.py 的90行
 
 `r = core.s.get(url, headers=headers,verify=False).json()`
 
-# 总结一下，六个需要改的地方
+# 总结一下，七个需要改的地方
 
 `utils.py 125行`
 
@@ -273,7 +273,7 @@ login.py 的90行
 
 `login.py 331行`
 
-这六个地方只要添加上`verify=False`就OK了，但是会有提示SSL安全警告提示
+这七个地方只要添加上`verify=False`就OK了，但是会有提示SSL安全警告提示
 
 在我的机器人代码的顶部 然后添加如下代码：
 
