@@ -257,7 +257,19 @@ login.py 的90行
 
 `r = core.s.get(url, headers=headers,verify=False).json()`
 
-# 总结一下，七个需要改的地方
+图片类信息无法通过安全验证，需要改 
+
+`vi /usr/lib/python2.7/site-packages/itchat/components/messages.py`
+
+439行的
+
+`return requests.post(url, files=files, headers=headers)`
+
+改为
+
+`return requests.post(url, files=files, headers=headers,verify=False)`
+
+# 总结一下，八个需要改的地方
 
 `utils.py 125行`
 
@@ -273,7 +285,9 @@ login.py 的90行
 
 `login.py 331行`
 
-这七个地方只要添加上`verify=False`就OK了，但是会有提示SSL安全警告提示
+`messages.py 419行`
+
+这八个地方只要添加上`verify=False`就OK了，但是会有提示SSL安全警告提示
 
 在我的机器人代码的顶部 然后添加如下代码：
 
