@@ -29,3 +29,219 @@ Python练手用的，原理是基于Itchat的网页微信接口来获取消息�
 就是这样，很简单！
 
 如果以后还有什么有趣的功能我再加入！
+
+# 详细教程 第一步:安装itchat
+
+该机器人是基于itchat的微信接口的，所以第一步是安装Itchat，在终端内输入
+
+`pip intstall itchat`
+
+(假定你安装了pip，如果没有，Linux 用户就install个pip,这玩意儿还在CentOS上还不能直接yum install pip,你可以上网百度下怎么安装，反正也就几行命令的事 )
+
+安装好之后你就可以愉快的运行我的小机器人了！
+
+`骗你的`
+
+# 详细教程 第二布:配置环境
+
+什么！还要配置环境？？！不然呢，你以为一个Python就无敌了吗。
+
+如果你你不想听我废话！直接拉到最后，可以看具体改的地方！
+
+下面我开始记录我的修改心路历程！
+
+大部分人运行小机器人的时候可能会发现，哇塞，出错了！
+
+SSLError: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed (_ssl.c:579)
+
+我的这个教程就是为了解决这个问题，其他问题都是小问题，这个是个大问题！因为我搞了好久查了好多资料，都没找到具体的办法。
+
+这个问题主要是SSL安全验证的问题，为了解决这个问题，我特意去认证了一个SSL证书，搞了个https，结果还是错误
+
+`FUCK`
+
+后面发现大部分SSL错误的网上都有一个还凑合的答案，就和电脑坏了就重启一样，那就是绕过SSL安全验证
+
+这时候就需要改itchat的代码了
+
+第一个错误是这样的:
+
+`Traceback (most recent call last):
+  File "/usr/lib/python2.7/site-packages/itchat/utils.py", line 125, in test_connect
+    r = requests.get(config.BASE_URL)
+  File "/usr/lib/python2.7/site-packages/requests/api.py", line 72, in get
+    return request('get', url, params=params, **kwargs)
+  File "/usr/lib/python2.7/site-packages/requests/api.py", line 58, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "/usr/lib/python2.7/site-packages/requests/sessions.py", line 513, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/lib/python2.7/site-packages/requests/sessions.py", line 623, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/lib/python2.7/site-packages/requests/adapters.py", line 514, in send
+    raise SSLError(e, request=request)
+SSLError: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed (_ssl.c:579)
+
+You can't get access to internet or wechat domain, so exit.
+`
+这时候你就需要修改itchat里的utils.py了
+
+ `vi /usr/lib/python2.7/site-packages/itchat/utils.py`
+ 
+ 切换到utils.py的125行，你会发现一个
+ 
+  `r = requests.get(config.BASE_URL)`
+  
+  你需要把它改成
+  
+ `r = requests.get(config.BASE_URL,verify=False)`
+ 
+ 接下来再运行小机器人
+ 
+ 还是错误！
+
+ `FUCK`
+ 
+ 错误如下:
+ 
+ `/usr/lib/python2.7/site-packages/urllib3/connectionpool.py:852: InsecureRequestWarning: Unverified HTTPS request is being made. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#ssl-warnings
+  InsecureRequestWarning)
+Getting uuid of QR code.
+Traceback (most recent call last):
+  File "./ichatrb.py", line 29, in <module>
+    itchat.auto_login(enableCmdQR=True)
+  File "/usr/lib/python2.7/site-packages/itchat/components/register.py", line 36, in auto_login
+    loginCallback=loginCallback, exitCallback=exitCallback)
+  File "/usr/lib/python2.7/site-packages/itchat/components/login.py", line 45, in login
+    while not self.get_QRuuid():
+  File "/usr/lib/python2.7/site-packages/itchat/components/login.py", line 102, in get_QRuuid
+    r = self.s.get(url, params=params, headers=headers)
+  File "/usr/lib/python2.7/site-packages/requests/sessions.py", line 526, in get
+    return self.request('GET', url, **kwargs)
+  File "/usr/lib/python2.7/site-packages/requests/sessions.py", line 513, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/lib/python2.7/site-packages/requests/sessions.py", line 623, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/lib/python2.7/site-packages/requests/adapters.py", line 514, in send
+    raise SSLError(e, request=request)
+requests.exceptions.SSLError: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed (_ssl.c:579)`
+
+第一行的提醒不用管，最后来处理
+
+现在看第四行
+
+login.py的102行，获取二维码ID失败，也是把
+
+`r = self.s.get(url, params=params, headers=headers)`
+
+改为
+
+'r = self.s.get(url, params=params, headers=headers, verify=False)'
+
+然后运行，我们就get了一个很丑的二维码
+
+![](http://packy.club/QR.png)  
+
+需要调一下二维码的宽度，具体可以看itchat的文档
+
+https://itchat.readthedocs.io/zh/latest/
+
+根据你自己的情况修改好之后，可以得到一个漂亮的二维码。
+
+有时候不能扫二维码是因为你需要把数值改成负的
+
+扫完二维码你会发现，又错误了！！
+
+`Traceback (most recent call last):
+  File "./ichatrb.py", line 29, in <module>
+    itchat.auto_login(enableCmdQR=-2)
+  File "/usr/lib/python2.7/site-packages/itchat/components/register.py", line 36, in auto_login
+    loginCallback=loginCallback, exitCallback=exitCallback)
+  File "/usr/lib/python2.7/site-packages/itchat/components/login.py", line 53, in login
+    status = self.check_login()
+  File "/usr/lib/python2.7/site-packages/itchat/components/login.py", line 137, in check_login
+    if process_login_info(self, r.text):
+  File "/usr/lib/python2.7/site-packages/itchat/components/login.py", line 155, in process_login_info
+    r = core.s.get(core.loginInfo['url'], headers=headers, allow_redirects=False)
+  File "/usr/lib/python2.7/site-packages/requests/sessions.py", line 526, in get
+    return self.request('GET', url, **kwargs)
+  File "/usr/lib/python2.7/site-packages/requests/sessions.py", line 513, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/lib/python2.7/site-packages/requests/sessions.py", line 623, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/lib/python2.7/site-packages/requests/adapters.py", line 514, in send
+    raise SSLError(e, request=request)
+requests.exceptions.SSLError: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed (_ssl.c:579)`
+
+继续修改login.py
+
+`vi /usr/lib/python2.7/site-packages/itchat/components/login.py`
+
+废话不多直接跳到133行
+
+`r = self.s.get(url, params=params, headers=headers)`
+
+改成你懂的
+
+`r = self.s.get(url, params=params, headers=headers , verify=False)`
+
+还是错误，继续改
+
+`vi /usr/lib/python2.7/site-packages/itchat/components/login.py`
+
+跳到155
+
+`r = core.s.get(core.loginInfo['url'], headers=headers, allow_redirects=False)`
+
+改成
+
+`r = core.s.get(core.loginInfo['url'], headers=headers, allow_redirects=False,verify=False)`
+
+终于登录成功了
+
+可是过一会儿一直跳错误
+
+`Traceback (most recent call last):
+  File "/usr/lib/python2.7/site-packages/itchat/components/login.py", line 244, in maintain_loop
+    i = sync_check(self)
+  File "/usr/lib/python2.7/site-packages/itchat/components/login.py", line 303, in sync_check
+    if not isinstance(e.args[0].args[1], BadStatusLine):
+IndexError: tuple index out of range`
+
+获取不到资料啊
+
+继续改 `vi /usr/lib/python2.7/site-packages/itchat/components/login.py`
+
+300行
+
+` r = self.s.get(url, params=params, headers=headers, timeout=config.TIMEOUT)`
+
+改成
+
+` r = self.s.get(url, params=params, headers=headers, timeout=config.TIMEOUT,verify=False)`
+
+改完之后登录！登录成功！！！
+
+总结一下，五个需要改的地方
+
+`utils.py 125行`
+
+`login.py 102行`
+
+`login.py 133行`
+
+`login.py 155行`
+
+`login.py 300行`
+
+这五个地方只要添加上`verify=False`就OK了，但是会有提示SSL安全警告提示
+
+在我的机器人代码的顶部 然后添加如下代码：
+
+`import requests
+
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
+
+requests.packages.urllib3.disable_warnings(InsecureRequestWarning)`
+
+完美！！
+
