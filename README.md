@@ -231,7 +231,7 @@ IndexError: tuple index out of range`
 
 `r = self.s.post(url, data=json.dumps(data), headers=headers, timeout=config.TIMEOUT,verify=False)`
 
-总结一下，五个需要改的地方
+总结一下，六个需要改的地方
 
 `utils.py 125行`
 
@@ -243,7 +243,9 @@ IndexError: tuple index out of range`
 
 `login.py 300行`
 
-这五个地方只要添加上`verify=False`就OK了，但是会有提示SSL安全警告提示
+`login.py 331行`
+
+这六个地方只要添加上`verify=False`就OK了，但是会有提示SSL安全警告提示
 
 在我的机器人代码的顶部 然后添加如下代码：
 
@@ -252,6 +254,8 @@ IndexError: tuple index out of range`
 `from requests.packages.urllib3.exceptions import InsecureRequestWarning`
 
 `requests.packages.urllib3.disable_warnings(InsecureRequestWarning)`
+
+如果有其他地方可能我暂时还没遇到错误
 
 完美！！
 
