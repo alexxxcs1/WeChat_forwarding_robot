@@ -96,7 +96,6 @@ SSLError: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed (_ssl.c:579
   File "/usr/lib/python2.7/site-packages/requests/adapters.py", line 514, in send
     raise SSLError(e, request=request)
 SSLError: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed (_ssl.c:579)
-
 You can't get access to internet or wechat domain, so exit.`
 
 这时候你就需要修改itchat里的utils.py了
