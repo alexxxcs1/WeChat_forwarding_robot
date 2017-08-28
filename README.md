@@ -1,7 +1,9 @@
 
 # 微信转发小机器人 
 
-这个机器人是基于 itchat 开发的一个小玩具[itchat链接](https://github.com/littlecodersh/ItChat "呵呵，有趣")   
+这个机器人是基于 itchat 开发的一个小玩具
+
+[itchat链接](https://github.com/littlecodersh/ItChat "呵呵，有趣")   
 
 Python练手用的，原理是基于Itchat的网页微信接口来获取消息，判断消息来源转发给另一个微信号。
 
