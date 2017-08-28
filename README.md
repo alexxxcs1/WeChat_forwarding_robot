@@ -81,8 +81,8 @@ SSLError: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed (_ssl.c:579
     raise SSLError(e, request=request)
 SSLError: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed (_ssl.c:579)
 
-You can't get access to internet or wechat domain, so exit.
-`
+You can't get access to internet or wechat domain, so exit.`
+
 这时候你就需要修改itchat里的utils.py了
 
  `vi /usr/lib/python2.7/site-packages/itchat/utils.py`
@@ -135,7 +135,7 @@ login.py的102行，获取二维码ID失败，也是把
 
 改为
 
-'r = self.s.get(url, params=params, headers=headers, verify=False)'
+`r = self.s.get(url, params=params, headers=headers, verify=False)`
 
 然后运行，我们就get了一个很丑的二维码
 
