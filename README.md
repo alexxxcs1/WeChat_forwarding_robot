@@ -221,6 +221,16 @@ IndexError: tuple index out of range`
 
 改完之后登录！登录成功！！！
 
+然后发现别人一发消息你就错误崩溃！
+
+是的还需要改  login.py 的331行
+
+`r = self.s.post(url, data=json.dumps(data), headers=headers, timeout=config.TIMEOUT)`
+
+改成
+
+`r = self.s.post(url, data=json.dumps(data), headers=headers, timeout=config.TIMEOUT,verify=False)`
+
 总结一下，五个需要改的地方
 
 `utils.py 125行`
