@@ -1,4 +1,4 @@
-# WeChat_forwarding_robot
+
 # 微信转发小机器人 
 
 这个机器人是基于 itchat 开发的一个小玩具[itchat链接](https://github.com/littlecodersh/ItChat "呵呵，有趣")   
