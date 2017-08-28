@@ -237,11 +237,11 @@ IndexError: tuple index out of range`
 
 在我的机器人代码的顶部 然后添加如下代码：
 
-`import requests
+`import requests`
 
-from requests.packages.urllib3.exceptions import InsecureRequestWarning
+`from requests.packages.urllib3.exceptions import InsecureRequestWarning`
 
-requests.packages.urllib3.disable_warnings(InsecureRequestWarning)`
+`requests.packages.urllib3.disable_warnings(InsecureRequestWarning)`
 
 完美！！
 
