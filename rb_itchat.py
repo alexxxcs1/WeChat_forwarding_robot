@@ -44,6 +44,7 @@ def text_reply(msg):
 				itchat.send(u'\u6d88\u606f\u53d1\u9001\u6210\u529f', toUserName=sourcepackyalex)
 			else:
 				itchat.send(u'\u672a\u627e\u5230\u7528\u6237', toUserName=sourcepackyalex)
+		 friendslist = re.match(r'#00#fl',msg['Text'])
 		 if friendslist:
                         flist=''
                         for i in range(len(itchat.get_friends())):
